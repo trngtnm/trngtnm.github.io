@@ -31,7 +31,7 @@ export const IntroClip = forwardRef<HTMLElement>(function IntroClip(_, ref) {
         </div>
 
         <div
-          className="relative z-10 flex min-h-[calc(100svh-var(--topbar-h)-var(--bottombar-h)-1.25rem)] w-full flex-col justify-center gap-3 py-10 pl-4 pr-5 text-left md:pl-[var(--clip-start)] md:pr-8 lg:min-h-[calc(100svh-var(--topbar-h)-var(--bottombar-h)-1.25rem)]"
+          className="relative z-10 flex min-h-[calc(100svh-var(--topbar-h)-var(--mobilenav-h)-env(safe-area-inset-bottom,0px))] w-full flex-col justify-center gap-3 py-10 pl-4 pr-5 text-left md:min-h-[calc(100svh-var(--topbar-h)-var(--bottombar-h)-1.25rem)] md:pl-[var(--clip-start)] md:pr-8"
           style={
             {
               "--clip-start": `${CONTENT_START_COL * GRID_COL}px`,

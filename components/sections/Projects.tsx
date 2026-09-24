@@ -22,18 +22,20 @@ const trackPadClass = "py-1.5";
 function SectionGap({ withGrid = false }: { withGrid?: boolean }) {
   return (
     <div
-      className="h-16 w-full min-h-16 border-b border-border sm:h-20 sm:min-h-20"
+      className="relative h-16 w-full min-h-16 border-b border-border bg-bg-primary sm:h-20 sm:min-h-20 md:bg-bg-panel"
       aria-hidden
-      style={
-        withGrid
-          ? {
-              backgroundImage:
-                "linear-gradient(to right, var(--border) 1px, transparent 1px)",
-              backgroundSize: `${GRID_COL}px 100%`,
-            }
-          : { backgroundColor: "var(--bg-panel)" }
-      }
-    />
+    >
+      {withGrid ? (
+        <div
+          className="pointer-events-none absolute inset-0 hidden md:block"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, var(--border) 1px, transparent 1px)",
+            backgroundSize: `${GRID_COL}px 100%`,
+          }}
+        />
+      ) : null}
+    </div>
   );
 }
 
@@ -79,7 +81,7 @@ export function Projects() {
         Arrangement
       </h2>
 
-      <div className="relative border-t border-border bg-bg-panel">
+      <div className="relative border-t border-border bg-bg-primary md:bg-bg-panel">
         <div className="sticky top-[var(--topbar-h)] z-40 hidden md:block">
           <div className="relative flex border-b border-border bg-bg-secondary">
             <div className="hidden h-5 w-[160px] shrink-0 border-r border-border bg-bg-secondary md:block" />
@@ -111,7 +113,7 @@ export function Projects() {
           </div>
           <div className="relative border-b border-border">
             <div
-              className="pointer-events-none absolute inset-0 opacity-35"
+              className="pointer-events-none absolute inset-0 hidden opacity-35 md:block"
               aria-hidden
               style={{
                 backgroundImage:
@@ -165,7 +167,7 @@ export function Projects() {
           </div>
           <div className={`relative border-b border-border ${trackPadClass}`}>
             <div
-              className="pointer-events-none absolute inset-0 opacity-35"
+              className="pointer-events-none absolute inset-0 hidden opacity-35 md:block"
               aria-hidden
               style={{
                 backgroundImage:
@@ -245,7 +247,7 @@ export function Projects() {
                   }}
                 >
                   <div
-                    className="pointer-events-none absolute inset-0 opacity-35"
+                    className="pointer-events-none absolute inset-0 hidden opacity-35 md:block"
                     aria-hidden
                     style={{
                       backgroundImage:

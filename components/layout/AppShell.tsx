@@ -102,7 +102,7 @@ function AppShellInner({ children }: AppShellProps) {
     <div className="min-h-screen bg-bg-primary text-text-primary">
       <TopBar />
       <DirectorySidebar activeId={activeId} onNavigate={scrollToSection} />
-      <div className="pt-[var(--topbar-h)] pb-16 lg:pb-[var(--bottombar-h)] lg:pl-[var(--sidebar-w)]">
+      <div className="pt-[var(--topbar-h)] pb-[calc(var(--mobilenav-h)+env(safe-area-inset-bottom,0px))] lg:pb-[var(--bottombar-h)] lg:pl-[var(--sidebar-w)]">
         <main className="w-full">{children}</main>
       </div>
       <BottomTransport

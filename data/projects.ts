@@ -5,7 +5,8 @@ export const projects: Project[] = [
     id: "01",
     slug: "kiteview",
     name: "KITEVIEW",
-    shortDescription: "AI PDF Reader with tap-to-explain annotations",
+    shortDescription:
+      "Cross-platform AI PDF reader that turns static and scanned documents into an interactive reading experience. Tap any phrase for explanations, dictionary lookup, and LLM paraphrasing — built macOS-first, with iOS and Android sharing the same codebase.",
     description:
       "Cross-platform AI PDF reader (macOS-first via react-native-macos) that turns static and scanned documents into an interactive reading experience with tap-to-explain annotations. Turborepo monorepo with shared packages for core, UI, and PDF engine — targeting native macOS now and iOS/Android later from one codebase.",
     category: "MOBILE · AI",
@@ -44,7 +45,8 @@ export const projects: Project[] = [
     id: "02",
     slug: "holoura",
     name: "HOLOURA",
-    shortDescription: "AI purchasing agent for collectibles",
+    shortDescription:
+      "AI purchasing agent that watches collectible availability across 10+ retail and marketplace sources. Ingests 15,000+ products and surfaces deals, demand forecasts, and personalized recommendations so you can buy before stock disappears.",
     description:
       "AI-powered purchasing agent that continuously monitors collectible product availability across 10+ retail and marketplace sources. Full-stack application with React Native, FastAPI, Supabase, and PostgreSQL — including ingestion of 15,000+ products and ML models for deal detection, demand forecasting, and personalized recommendations.",
     category: "FULL STACK · ML",
@@ -78,7 +80,8 @@ export const projects: Project[] = [
     id: "03",
     slug: "ai-music-transcription",
     name: "AI MUSIC TRANSCRIPTION",
-    shortDescription: "Audio-to-score ML transcription pipeline",
+    shortDescription:
+      "Machine learning and DSP pipeline that converts WAV recordings into sheet music and PDF scores. Cuts manual transcription time by about 92% and reaches ~89% accuracy across 50+ test recordings.",
     description:
       "Machine learning and digital signal processing system for automated audio-to-score transcription. Python pipeline converts WAV recordings into sheet music notation and PDF outputs, cutting manual transcription time by approximately 92% and reaching ~89% accuracy across 50+ test recordings.",
     category: "AI / ML · DSP",
@@ -110,7 +113,8 @@ export const projects: Project[] = [
     id: "04",
     slug: "parkeye",
     name: "PARKEYE",
-    shortDescription: "Mobile parking intelligence platform",
+    shortDescription:
+      "Campus parking app that uses real-time occupancy, permit type, events, and location to recommend the best lot. Built for 500+ potential users across 20+ locations with React Native, FastAPI, and Supabase.",
     description:
       "Cross-platform mobile application for 500+ potential users that uses real-time data and location-aware logic to identify optimal parking based on permit type, occupancy trends, events, and campus conditions. Built with React Native, Supabase/PostgreSQL, FastAPI, and Railway infrastructure across 20+ parking locations.",
     category: "MOBILE",

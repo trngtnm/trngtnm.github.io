@@ -22,7 +22,7 @@ export function MobileNav({ activeId, onNavigate }: MobileNavProps) {
   return (
     <nav
       aria-label="Mobile sections"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-bg-secondary lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-bg-secondary pb-[env(safe-area-inset-bottom,0px)] lg:hidden"
     >
       <ul className="grid grid-cols-5">
         {navigation.map((item) => {
@@ -36,7 +36,7 @@ export function MobileNav({ activeId, onNavigate }: MobileNavProps) {
                   onNavigate(item.id);
                 }}
                 className={cn(
-                  "flex min-h-14 flex-col items-center justify-center gap-1 font-mono text-[10px] tracking-wider uppercase transition-colors duration-150",
+                  "flex h-[var(--mobilenav-h)] flex-col items-center justify-center gap-1 font-mono text-[10px] tracking-wider uppercase transition-colors duration-150",
                   active ? "text-accent" : "text-text-muted",
                 )}
                 aria-current={active ? "true" : undefined}
