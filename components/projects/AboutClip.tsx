@@ -14,13 +14,8 @@ export function AboutClip() {
       className="scroll-mt-[calc(var(--topbar-h)+1.25rem)] w-full"
     >
       <div
-        className="relative z-10 overflow-hidden border bg-bg-panel md:ml-[var(--clip-start)]"
-        style={
-          {
-            borderColor: `${ABOUT_COLOR}88`,
-            "--clip-start": `${CONTENT_START_COL * GRID_COL}px`,
-          } as CSSProperties
-        }
+        className="relative z-10 w-full overflow-hidden border bg-bg-panel"
+        style={{ borderColor: `${ABOUT_COLOR}88` } as CSSProperties}
       >
         <div
           className="pointer-events-none absolute inset-0"
@@ -28,7 +23,14 @@ export function AboutClip() {
           aria-hidden
         />
 
-        <div className="relative z-10 flex min-h-[28rem] flex-col justify-center gap-6 px-4 py-12 sm:min-h-[32rem] sm:px-6 sm:py-16 lg:min-h-[36rem]">
+        <div
+          className="relative z-10 flex min-h-[28rem] w-full flex-col justify-center gap-6 px-4 py-12 sm:min-h-[32rem] sm:py-16 lg:min-h-[36rem] md:pl-[var(--clip-start)] md:pr-8"
+          style={
+            {
+              "--clip-start": `${CONTENT_START_COL * GRID_COL}px`,
+            } as CSSProperties
+          }
+        >
           <div className="flex flex-wrap items-center gap-3">
             <span
               className="flex size-4 items-center justify-center"

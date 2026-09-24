@@ -10,7 +10,7 @@ type MobileNavProps = {
 
 const shortLabels: Record<string, string> = {
   intro: "INTRO",
-  projects: "WORK",
+  projects: "PROJECT",
   skills: "SKILLS",
   about: "ABOUT",
   contact: "CONTACT",

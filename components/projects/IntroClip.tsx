@@ -24,7 +24,7 @@ export const IntroClip = forwardRef<HTMLElement>(function IntroClip(_, ref) {
         style={{ borderColor: "var(--border)" } as CSSProperties}
       >
         <div
-          className="pointer-events-none absolute inset-x-0 top-0 z-0 h-1/3 opacity-10 md:top-1/2 md:h-1/2 md:-translate-y-1/2 md:opacity-20"
+          className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-1/3 -translate-y-1/2 opacity-10 md:h-1/2 md:opacity-20"
           aria-hidden
         >
           <WaveCandy className="h-full w-full" />

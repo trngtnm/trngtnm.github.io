@@ -39,6 +39,27 @@ function SectionGap({ withGrid = false }: { withGrid?: boolean }) {
   );
 }
 
+function ArrangementGaps({ id }: { id: string }) {
+  return (
+    <>
+      <div
+        className="h-80 w-full border-b border-border bg-bg-primary sm:h-[25rem] md:hidden"
+        aria-hidden
+      />
+      {Array.from({ length: GAP_COUNT }, (_, index) => (
+        <Fragment key={`${id}-${index}`}>
+          <div className="hidden border-r border-border md:block">
+            <SectionGap />
+          </div>
+          <div className="hidden md:contents">
+            <SectionGap withGrid />
+          </div>
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
 export function Projects() {
   const { seekTo } = useTransport();
   const { selectedSlug, setSelectedSlug } = useSelectedProject();
@@ -124,15 +145,7 @@ export function Projects() {
             <IntroClip />
           </div>
 
-          {/* Five empty rows between intro and the next section */}
-          {Array.from({ length: GAP_COUNT }, (_, index) => (
-            <Fragment key={`gap-${index}`}>
-              <div className="hidden border-r border-border md:block">
-                <SectionGap />
-              </div>
-              <SectionGap withGrid />
-            </Fragment>
-          ))}
+          <ArrangementGaps id="intro-gap" />
 
           {/* Session info / about — arrangement track */}
           <div className="col-span-full flex h-12 items-center border-b border-border bg-bg-secondary md:hidden">
@@ -165,7 +178,7 @@ export function Projects() {
               </span>
             </button>
           </div>
-          <div className={`relative border-b border-border ${trackPadClass}`}>
+          <div className="relative border-b border-border">
             <div
               className="pointer-events-none absolute inset-0 hidden opacity-35 md:block"
               aria-hidden
@@ -178,14 +191,7 @@ export function Projects() {
             <AboutClip />
           </div>
 
-          {Array.from({ length: GAP_COUNT }, (_, index) => (
-            <Fragment key={`about-gap-${index}`}>
-              <div className="hidden border-r border-border md:block">
-                <SectionGap />
-              </div>
-              <SectionGap withGrid />
-            </Fragment>
-          ))}
+          <ArrangementGaps id="about-gap" />
 
           <div
             id="projects"
@@ -267,7 +273,9 @@ export function Projects() {
             );
           })}
         </div>
-        <Playhead railWidth={railWidth} />
+        <div className="hidden md:contents">
+          <Playhead railWidth={railWidth} />
+        </div>
       </div>
     </section>
   );
