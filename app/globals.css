@@ -1,26 +1,152 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #111111;
+  --bg-secondary: #161616;
+  --bg-panel: #1b1b1b;
+  --bg-elevated: #202020;
+  --border: #2b2b2b;
+  --border-strong: #383838;
+  --text-primary: #f2f2f2;
+  --text-secondary: #a0a0a0;
+  --text-muted: #666666;
+  --text-disabled: #444444;
+  --accent: #ff8a00;
+  --accent-hover: #ff9f2d;
+  --accent-muted: rgba(255, 138, 0, 0.15);
+  --playback: #8bcf3f;
+  --playback-glow: rgba(139, 207, 63, 0.35);
+  --record: #c43c3c;
+  --topbar-h: 56px;
+  --bottombar-h: 48px;
+  --sidebar-w: 250px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-panel: var(--bg-panel);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-disabled: var(--text-disabled);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-muted: var(--accent-muted);
+  --color-playback: var(--playback);
+  --color-record: var(--record);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .motion-safe-only {
+    animation: none !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--accent-muted);
+  color: var(--text-primary);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.font-mono {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+}
+
+.section-pad {
+  padding-block: 4.5rem;
+}
+
+.content-pad {
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+  .content-pad {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-pad {
+    padding-block: 5.5rem;
+  }
+
+  .content-pad {
+    padding-inline: 2rem;
+  }
+}
+
+@keyframes waveform-drift {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.waveform-drift {
+  animation: waveform-drift 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waveform-drift {
+    animation: none !important;
+  }
+}
+
+/* DAW-style horizontal scrollbars (arrangement + mixer) */
+.daw-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #383838 #111111;
+}
+
+.daw-scroll::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.daw-scroll::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+.daw-scroll::-webkit-scrollbar-thumb {
+  background: #383838;
+  border-radius: 0;
+}
+
+.daw-scroll::-webkit-scrollbar-thumb:hover {
+  background: #ff8a00;
+}
+
+.daw-scroll::-webkit-scrollbar-thumb:active {
+  background: #ff8a00;
 }

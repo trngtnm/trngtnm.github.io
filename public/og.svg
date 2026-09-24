@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#111111"/>
+  <rect x="40" y="40" width="1120" height="550" rx="0" stroke="#2B2B2B" fill="#161616"/>
+  <text x="80" y="100" fill="#666666" font-family="ui-monospace, monospace" font-size="18" letter-spacing="6">PORTFOLIO_SESSION_01</text>
+  <text x="80" y="280" fill="#F2F2F2" font-family="ui-sans-serif, system-ui, sans-serif" font-size="72" font-weight="500">TIN MAI</text>
+  <text x="80" y="340" fill="#FF8A00" font-family="ui-monospace, monospace" font-size="24" letter-spacing="4">SOFTWARE ENGINEER</text>
+  <text x="80" y="420" fill="#A0A0A0" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22">AI/ML · Mobile · Backend · Data</text>
+  <circle cx="1080" cy="100" r="6" fill="#FF8A00"/>
+  <text x="1100" y="106" fill="#A0A0A0" font-family="ui-monospace, monospace" font-size="14" text-anchor="end">ONLINE</text>
+</svg>

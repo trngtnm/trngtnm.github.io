@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800" fill="none">
+  <rect width="1280" height="800" fill="#161616"/>
+  <rect x="48" y="48" width="1184" height="704" rx="8" stroke="#2B2B2B" fill="#1B1B1B"/>
+  <text x="80" y="100" fill="#666666" font-family="ui-monospace, monospace" font-size="18" letter-spacing="4">PROJECT_PREVIEW</text>
+  <text x="640" y="390" fill="#F2F2F2" font-family="ui-sans-serif, system-ui, sans-serif" font-size="42" text-anchor="middle" font-weight="500">KITEVIEW</text>
+  <text x="640" y="440" fill="#FF8A00" font-family="ui-monospace, monospace" font-size="16" text-anchor="middle" letter-spacing="3">SCREENSHOT PLACEHOLDER</text>
+  <path d="M200 560 H320 L350 520 L390 600 L430 540 L480 580 L520 530 L580 590 L640 550 L700 600 L760 540 L820 580 L880 520 L940 590 H1080" stroke="#FF8A00" stroke-opacity="0.45" stroke-width="2" fill="none"/>
+</svg>

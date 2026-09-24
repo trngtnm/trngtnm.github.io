@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tin Mai — Portfolio
 
-## Getting Started
+FL Studio–inspired personal portfolio for Tin Mai. Built with Next.js (static export) and deployed to GitHub Pages.
 
-First, run the development server:
+## Stack
+
+- Next.js App Router + TypeScript
+- Tailwind CSS (design tokens)
+- Motion, Lucide React
+- React Hook Form + Zod
+- Formspree (optional contact delivery)
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+npm run build   # static export → out/
+npm run lint
+npm run format
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Edit structured data in `data/`:
 
-## Learn More
+- `projects.ts`
+- `experience.ts`
+- `skills.ts`
+- `navigation.ts`
+- `social.ts`
 
-To learn more about Next.js, take a look at the following resources:
+## Contact form
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a form at [Formspree](https://formspree.io)
+2. Set `NEXT_PUBLIC_FORMSPREE_ID` locally (`.env.local`) and as a GitHub Actions **variable**
+3. Without it, the form opens a `mailto:` draft
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+Push to `main`. The workflow builds the static site and deploys to [https://trngtnm.github.io/](https://trngtnm.github.io/).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Enable **Settings → Pages → Source: GitHub Actions** on the repository.
