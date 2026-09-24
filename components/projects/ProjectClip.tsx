@@ -55,7 +55,7 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
             }}
             aria-expanded={expanded}
             aria-controls={panelId}
-            className="group relative z-10 flex w-full flex-col gap-2 overflow-hidden px-3 py-3 text-left sm:px-4"
+            className="group relative z-10 flex w-full flex-col gap-1.5 overflow-hidden px-3 py-2 text-left md:gap-2 md:px-4 md:py-3"
           >
             <div className="relative z-10 flex flex-wrap items-center gap-3">
               <span
@@ -85,10 +85,13 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
                 </span>
               )}
             </div>
-            <p className="relative z-10 text-sm leading-relaxed text-text-primary/85">
+            <p className="relative z-10 truncate text-xs text-text-primary/85 md:hidden">
+              {project.shortDescription}
+            </p>
+            <p className="relative z-10 hidden text-sm leading-relaxed text-text-primary/85 md:block">
               {project.description}
             </p>
-            <p className="relative z-10 font-mono text-[10px] tracking-wider text-text-secondary uppercase">
+            <p className="relative z-10 hidden font-mono text-[10px] tracking-wider text-text-secondary uppercase md:block">
               {project.technologies.slice(0, 4).join(" · ")}
             </p>
           </button>
@@ -154,7 +157,7 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
                 </div>
               </div>
 
-              <figure className="overflow-hidden rounded-lg border border-border bg-bg-panel">
+              <figure className="hidden overflow-hidden rounded-lg border border-border bg-bg-panel md:block">
                 <div className="border-b border-border px-3 py-2 font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase">
                   Preview
                 </div>

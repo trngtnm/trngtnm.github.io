@@ -27,7 +27,7 @@ export function TopBar() {
           aria-hidden={false}
         >
           <div
-            className="pointer-events-auto flex items-center gap-2 md:gap-4"
+            className="pointer-events-auto hidden items-center gap-2 md:flex md:gap-4"
             role="group"
             aria-label="Transport controls"
           >

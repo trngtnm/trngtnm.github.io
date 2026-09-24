@@ -133,6 +133,16 @@ export function Projects() {
           ))}
 
           {/* Session info / about — arrangement track */}
+          <div className="col-span-full flex h-12 items-center border-b border-border bg-bg-secondary md:hidden">
+            <span
+              className="w-1.5 shrink-0 self-stretch"
+              style={{ backgroundColor: ABOUT_COLOR }}
+              aria-hidden
+            />
+            <span className="px-2.5 font-mono text-sm font-semibold tracking-[0.14em] text-text-primary uppercase">
+              ABOUT
+            </span>
+          </div>
           <div className="hidden border-r border-b border-border md:block">
             <button
               type="button"
@@ -179,6 +189,16 @@ export function Projects() {
             id="projects"
             className="col-span-full h-px w-full scroll-mt-[calc(var(--topbar-h)+1.25rem)]"
           />
+
+          <div className="col-span-full flex h-12 items-center border-b border-border bg-bg-secondary md:hidden">
+            <span
+              className="w-1.5 shrink-0 self-stretch bg-text-secondary"
+              aria-hidden
+            />
+            <span className="px-2.5 font-mono text-sm font-semibold tracking-[0.14em] text-text-primary uppercase">
+              PROJECTS
+            </span>
+          </div>
 
           <div className="hidden border-r border-b border-border md:block">
             <div className="flex h-16 min-h-16 items-center bg-bg-secondary sm:h-20 sm:min-h-20">
