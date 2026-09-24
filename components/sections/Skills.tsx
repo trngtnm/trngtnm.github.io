@@ -14,7 +14,7 @@ export function Skills() {
       aria-labelledby="skills-heading"
       className="section-pad content-pad scroll-mt-[calc(var(--topbar-h)+1rem)] overflow-x-hidden border-b border-border"
     >
-      <SectionLabel label="CHANNEL_RACK / SKILLS" />
+      <SectionLabel label="SKILLS" />
       <h2 id="skills-heading" className="sr-only">
         Skills
       </h2>

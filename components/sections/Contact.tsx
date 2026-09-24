@@ -82,7 +82,7 @@ export function Contact() {
       aria-labelledby="contact-heading"
       className="section-pad content-pad scroll-mt-[calc(var(--topbar-h)+1rem)]"
     >
-      <SectionLabel label="MASTER / CONTACT" />
+      <SectionLabel label="CONTACT" />
       <h2
         id="contact-heading"
         className="max-w-xl text-3xl font-medium tracking-tight text-text-primary sm:text-4xl"

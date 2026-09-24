@@ -1,5 +1,7 @@
 "use client";
 
+import { IntroColumnSweep } from "@/components/intro/IntroColumnSweep";
+import { useIntroReveal } from "@/components/intro/IntroRevealContext";
 import { AboutClip } from "@/components/projects/AboutClip";
 import { ArrangementHeader } from "@/components/projects/ArrangementHeader";
 import { IntroClip } from "@/components/projects/IntroClip";
@@ -10,6 +12,7 @@ import { useSelectedProject } from "@/components/session/SelectedProjectContext"
 import { useTransport } from "@/components/session/TransportContext";
 import { clipRangeForSlug, clipEndToProgress, arrangementLaneWidthPx, GRID_COL } from "@/data/clipRanges";
 import { projects } from "@/data/projects";
+import { motion } from "motion/react";
 import { Fragment, useCallback, useEffect, useState } from "react";
 
 const INTRO_COLOR = "#c8c8c8";
@@ -39,6 +42,59 @@ function SectionGap({ withGrid = false }: { withGrid?: boolean }) {
   );
 }
 
+function IntroRow() {
+  const { phase } = useIntroReveal();
+  const contentReady = phase !== "columns";
+
+  return (
+    <>
+      <div
+        className={`relative hidden bg-bg-primary md:block ${
+          contentReady
+            ? "z-20 border-r border-b border-border"
+            : "z-0 border-transparent"
+        }`}
+      >
+        <motion.div
+          className="h-full"
+          initial={{ opacity: 0, x: -16 }}
+          animate={contentReady ? { opacity: 1, x: 0 } : { opacity: 0, x: -16 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <TrackIdentifier
+            name="INTRO"
+            color={INTRO_COLOR}
+            expanded={false}
+            onSelect={() => {
+              document
+                .getElementById("intro")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+          />
+        </motion.div>
+      </div>
+      <div
+        id="intro-lane"
+        className={`relative ${contentReady ? "border-b border-border" : ""}`}
+      >
+        <div
+          className={`pointer-events-none absolute inset-0 hidden opacity-35 ${
+            phase !== "columns" ? "md:block" : ""
+          }`}
+          aria-hidden
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, var(--border) 1px, transparent 1px)",
+            backgroundSize: `${GRID_COL}px 100%`,
+          }}
+        />
+        <IntroColumnSweep />
+        <IntroClip />
+      </div>
+    </>
+  );
+}
+
 function ArrangementGaps({ id }: { id: string }) {
   return (
     <>
@@ -63,6 +119,7 @@ function ArrangementGaps({ id }: { id: string }) {
 export function Projects() {
   const { seekTo } = useTransport();
   const { selectedSlug, setSelectedSlug } = useSelectedProject();
+  const { phase } = useIntroReveal();
   const [railWidth, setRailWidth] = useState(0);
 
   const handleSelect = useCallback(
@@ -80,6 +137,16 @@ export function Projects() {
             ),
         collapsing ? 300 : 400,
       );
+
+      if (!collapsing) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            document
+              .getElementById(`project-${slug}`)
+              ?.scrollIntoView({ behavior: "smooth", block: "center" });
+          });
+        });
+      }
     },
     [seekTo, setSelectedSlug, selectedSlug],
   );
@@ -96,14 +163,29 @@ export function Projects() {
     <section
       id="arrangement"
       aria-labelledby="projects-heading"
-      className="scroll-mt-[var(--topbar-h)] border-b border-border"
+      className={`scroll-mt-[var(--topbar-h)] ${
+        phase === "columns" ? "" : "border-b border-border"
+      }`}
     >
       <h2 id="projects-heading" className="sr-only">
         Arrangement
       </h2>
 
-      <div className="relative border-t border-border bg-bg-primary md:bg-bg-panel">
-        <div className="sticky top-[var(--topbar-h)] z-40 hidden md:block">
+      <div
+        className={`relative bg-bg-primary ${
+          phase === "columns"
+            ? ""
+            : "border-t border-border md:bg-bg-panel"
+        }`}
+      >
+        <motion.div
+          className={`sticky top-[var(--topbar-h)] z-40 ${
+            phase === "columns" ? "h-0 overflow-hidden md:block" : "hidden md:block"
+          }`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: phase !== "columns" ? 1 : 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        >
           <div className="relative flex border-b border-border bg-bg-secondary">
             <div className="hidden h-5 w-[160px] shrink-0 border-r border-border bg-bg-secondary md:block" />
             <div
@@ -113,38 +195,15 @@ export function Projects() {
               <ArrangementHeader />
             </div>
           </div>
-        </div>
+        </motion.div>
 
         <div
           id="arrangement-canvas"
           className="relative grid w-full grid-cols-1 md:grid-cols-[160px_minmax(0,1fr)]"
         >
-          {/* Intro row */}
-          <div className="hidden border-r border-b border-border md:block">
-            <TrackIdentifier
-              name="INTRO"
-              color={INTRO_COLOR}
-              expanded={false}
-              onSelect={() => {
-                document
-                  .getElementById("intro")
-                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            />
-          </div>
-          <div className="relative border-b border-border">
-            <div
-              className="pointer-events-none absolute inset-0 hidden opacity-35 md:block"
-              aria-hidden
-              style={{
-                backgroundImage:
-                  "linear-gradient(to right, var(--border) 1px, transparent 1px)",
-                backgroundSize: `${GRID_COL}px 100%`,
-              }}
-            />
-            <IntroClip />
-          </div>
+          <IntroRow />
 
+          <div className={phase === "columns" ? "hidden" : "contents"}>
           <ArrangementGaps id="intro-gap" />
 
           {/* Session info / about — arrangement track */}
@@ -195,7 +254,7 @@ export function Projects() {
 
           <div
             id="projects"
-            className="col-span-full h-px w-full scroll-mt-[calc(var(--topbar-h)+1.25rem)]"
+            className="col-span-full h-px w-full scroll-mt-[var(--topbar-h)] md:scroll-mt-[calc(var(--topbar-h)+1.25rem)]"
           />
 
           <div className="col-span-full flex h-12 items-center border-b border-border bg-bg-secondary md:hidden">
@@ -272,6 +331,7 @@ export function Projects() {
               </Fragment>
             );
           })}
+          </div>
         </div>
         <div className="hidden md:contents">
           <Playhead railWidth={railWidth} />

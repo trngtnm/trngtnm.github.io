@@ -6,6 +6,10 @@ import { useEffect, useRef } from "react";
 
 type WaveCandyProps = {
   className?: string;
+  /** 0–1 clip from the left. Defaults to fully drawn. */
+  revealProgress?: number;
+  /** Brighter traces during the intro draw-in. */
+  vivid?: boolean;
 };
 
 const SCOPE_POINTS = 720;
@@ -16,11 +20,19 @@ const TRACES = [
 ];
 
 /** Decorative FL Studio Wave Candy–style oscilloscope (no real audio). */
-export function WaveCandy({ className }: WaveCandyProps) {
+export function WaveCandy({
+  className,
+  revealProgress = 1,
+  vivid = false,
+}: WaveCandyProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { isPlaying } = useTransport();
   const playingRef = useRef(isPlaying);
   playingRef.current = isPlaying;
+  const revealRef = useRef(revealProgress);
+  revealRef.current = revealProgress;
+  const vividRef = useRef(vivid);
+  vividRef.current = vivid;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -113,11 +125,14 @@ export function WaveCandy({ className }: WaveCandyProps) {
 
       ctx.clearRect(0, 0, width, height);
 
+      const reveal = Math.min(1, Math.max(0, revealRef.current));
+      const revealX = reveal * width;
+
       ctx.strokeStyle = "rgba(255,255,255,0.06)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(0, midY);
-      ctx.lineTo(width, midY);
+      ctx.lineTo(revealX, midY);
       ctx.stroke();
 
       ctx.lineJoin = "miter";
@@ -126,18 +141,25 @@ export function WaveCandy({ className }: WaveCandyProps) {
 
       for (const trace of TRACES) {
         ctx.beginPath();
+        let started = false;
         for (let i = 0; i < SCOPE_POINTS; i++) {
           const xNorm = i / (SCOPE_POINTS - 1);
+          if (xNorm > reveal) break;
           const x = xNorm * width;
           const y = midY - sample(t, xNorm, trace.voice) * ampPx;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
+          if (!started) {
+            ctx.moveTo(x, y);
+            started = true;
+          } else ctx.lineTo(x, y);
         }
-        ctx.strokeStyle = trace.color;
-        ctx.globalAlpha = trace.glow;
+        if (!started) continue;
+        const glow = vividRef.current ? 0.55 : trace.glow;
+        const core = vividRef.current ? 1 : 0.9;
+        ctx.strokeStyle = vividRef.current ? "#b8f06a" : trace.color;
+        ctx.globalAlpha = glow;
         ctx.lineWidth = 2.5;
         ctx.stroke();
-        ctx.globalAlpha = 0.9;
+        ctx.globalAlpha = core;
         ctx.lineWidth = trace.width;
         ctx.stroke();
         ctx.globalAlpha = 1;

@@ -14,21 +14,21 @@ export const CLIP_SPAN_COLS = MARKER_STEP_COLS * 3.5;
  * Clip placement on the 48px grid (canvas is fit-to-width, no H-scroll).
  * Column 0 = first cell (flush with ID rail). Marker 01 sits at column 1
  * (one empty column between the ID rail and 01).
- * Project tracks stagger starting at 01; each spans 3½ markers.
+ * Project tracks stagger starting one column after 01; each spans 3½ markers.
  * `width` is span in grid columns (intro uses full lane; width unused).
  */
 export const clipRanges = [
   { slug: "intro", startCol: 0, width: CLIP_SPAN_COLS },
-  { slug: "kiteview", startCol: 1, width: CLIP_SPAN_COLS },
-  { slug: "holoura", startCol: 1 + HALF_STEP_COLS, width: CLIP_SPAN_COLS },
+  { slug: "kiteview", startCol: 2, width: CLIP_SPAN_COLS },
+  { slug: "holoura", startCol: 2 + HALF_STEP_COLS, width: CLIP_SPAN_COLS },
   {
     slug: "ai-music-transcription",
-    startCol: 1 + MARKER_STEP_COLS,
+    startCol: 2 + MARKER_STEP_COLS,
     width: CLIP_SPAN_COLS,
   },
   {
     slug: "parkeye",
-    startCol: 1 + MARKER_STEP_COLS + HALF_STEP_COLS,
+    startCol: 2 + MARKER_STEP_COLS + HALF_STEP_COLS,
     width: CLIP_SPAN_COLS,
   },
 ] as const;
@@ -37,7 +37,7 @@ export function clipRangeForSlug(slug: string) {
   return (
     clipRanges.find((range) => range.slug === slug) ?? {
       slug,
-      startCol: 1,
+      startCol: 2,
       width: CLIP_SPAN_COLS,
     }
   );

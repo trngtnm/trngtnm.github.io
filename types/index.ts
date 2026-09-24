@@ -17,7 +17,7 @@ export type Project = {
   features: string[];
   architecture: string[];
   image: string;
-  github: string;
+  github: string | null;
   demo: string | null;
   year: string;
 };

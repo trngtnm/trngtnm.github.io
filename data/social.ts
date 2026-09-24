@@ -10,7 +10,7 @@ export const social: SocialLink[] = [
   {
     id: "github",
     label: "GITHUB",
-    href: "https://github.com/trongtinmai",
+    href: "https://github.com/trngtnm",
     icon: "github",
   },
   {
@@ -35,6 +35,7 @@ export const profile = {
   focus: "Software Engineering",
   specialty: "AI / ML · Mobile · Systems",
   status: "BUILDING",
-  session: "PORTFOLIO_SESSION.flp",
+  session: "tin_mai_resume.pdf",
+  resumeHref: "/trongtin_tran_mai_resume_sept26.pdf",
   buildYear: "2026",
 } as const;

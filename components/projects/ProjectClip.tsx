@@ -134,15 +134,25 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
                   </ol>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center gap-2 border border-border px-4 font-mono text-xs tracking-wider uppercase transition-colors hover:border-border-strong hover:bg-white/[0.03]"
-                  >
-                    <GithubIcon className="size-3.5" />
-                    GitHub
-                  </a>
+                  {project.github ? (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-11 items-center gap-2 border border-border px-4 font-mono text-xs tracking-wider uppercase transition-colors hover:border-border-strong hover:bg-white/[0.03]"
+                    >
+                      <GithubIcon className="size-3.5" />
+                      GitHub
+                    </a>
+                  ) : (
+                    <span
+                      className="inline-flex min-h-11 cursor-not-allowed items-center gap-2 border border-border px-4 font-mono text-xs tracking-wider text-text-disabled uppercase"
+                      aria-disabled="true"
+                    >
+                      <GithubIcon className="size-3.5" />
+                      GitHub
+                    </span>
+                  )}
                   {project.demo && (
                     <a
                       href={project.demo}

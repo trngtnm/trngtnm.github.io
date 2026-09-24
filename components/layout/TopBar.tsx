@@ -3,6 +3,7 @@
 import { useTransport } from "@/components/session/TransportContext";
 import { profile } from "@/data/social";
 import { cn } from "@/lib/utils";
+import { Download } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -70,9 +71,15 @@ export function TopBar() {
           </div>
         </div>
 
-        <div className="z-10 max-w-[40%] shrink-0 truncate font-mono text-[10px] tracking-[0.12em] text-text-muted uppercase md:text-[11px]">
-          {profile.session}
-        </div>
+        <a
+          href={profile.resumeHref}
+          download={profile.session}
+          aria-label="Download resume"
+          className="z-10 inline-flex shrink-0 items-center gap-1.5 border border-border bg-bg-panel px-2 py-1 font-mono text-xs tracking-[0.1em] text-text-primary uppercase transition-colors duration-150 hover:border-accent hover:text-accent md:gap-2 md:px-2.5 md:text-sm"
+        >
+          <Download className="size-3.5 shrink-0 md:size-4" aria-hidden />
+          <span>{profile.session}</span>
+        </a>
       </div>
     </header>
   );

@@ -1,6 +1,9 @@
 "use client";
 
-import { BottomTransport } from "@/components/layout/BottomTransport";
+import {
+  IntroRevealProvider,
+  useIntroReveal,
+} from "@/components/intro/IntroRevealContext";
 import { DirectorySidebar } from "@/components/layout/DirectorySidebar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { TopBar } from "@/components/layout/TopBar";
@@ -26,6 +29,7 @@ function AppShellInner({ children }: AppShellProps) {
   const [activeId, setActiveId] = useState("intro");
   const { setSelectedSlug, selectedSlug } = useSelectedProject();
   const { seekTo } = useTransport();
+  const { phase } = useIntroReveal();
 
   const scrollToSection = useCallback(
     (id: string) => {
@@ -55,7 +59,7 @@ function AppShellInner({ children }: AppShellProps) {
         setActiveId("projects");
         const el = document.getElementById(id);
         if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
         }
         return;
       }
@@ -81,7 +85,7 @@ function AppShellInner({ children }: AppShellProps) {
       let current = sectionIds[0] ?? "intro";
       for (const id of sectionIds) {
         const el = document.getElementById(id);
-        if (!el) continue;
+        if (!el || el.getClientRects().length === 0) continue;
         if (el.getBoundingClientRect().top <= offset) {
           current = id;
         }
@@ -96,18 +100,19 @@ function AppShellInner({ children }: AppShellProps) {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, []);
+  }, [phase]);
 
   return (
-    <div className="min-h-screen bg-bg-primary text-text-primary">
+    <div className="min-h-screen overflow-x-hidden bg-bg-primary text-text-primary">
       <TopBar />
-      <DirectorySidebar activeId={activeId} onNavigate={scrollToSection} />
-      <div className="pt-[var(--topbar-h)] pb-[calc(var(--mobilenav-h)+env(safe-area-inset-bottom,0px))] lg:pb-[var(--bottombar-h)] lg:pl-[var(--sidebar-w)]">
+      <DirectorySidebar
+        activeId={activeId}
+        playingLabel={resolvePlayingLabel(activeId, selectedSlug)}
+        onNavigate={scrollToSection}
+      />
+      <div className="pt-[var(--topbar-h)] pb-[calc(var(--mobilenav-h)+env(safe-area-inset-bottom,0px))] lg:pb-0 lg:pl-[var(--sidebar-w)]">
         <main className="w-full">{children}</main>
       </div>
-      <BottomTransport
-        playingLabel={resolvePlayingLabel(activeId, selectedSlug)}
-      />
       <MobileNav activeId={activeId} onNavigate={scrollToSection} />
     </div>
   );
@@ -117,7 +122,9 @@ export function AppShell({ children }: AppShellProps) {
   return (
     <TransportProvider>
       <SelectedProjectProvider>
-        <AppShellInner>{children}</AppShellInner>
+        <IntroRevealProvider>
+          <AppShellInner>{children}</AppShellInner>
+        </IntroRevealProvider>
       </SelectedProjectProvider>
     </TransportProvider>
   );
