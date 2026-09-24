@@ -2,6 +2,7 @@ import { Tag } from "@/components/ui/Tag";
 import { GRID_COL } from "@/data/clipRanges";
 import { profile } from "@/data/social";
 import { Circle } from "lucide-react";
+import type { CSSProperties } from "react";
 
 const ABOUT_COLOR = "#9bb8d4";
 const CONTENT_START_COL = 1;
@@ -14,10 +15,12 @@ export function AboutClip() {
     >
       <div
         className="relative z-10 overflow-hidden border bg-bg-panel md:ml-[var(--clip-start)]"
-        style={{
-          borderColor: `${ABOUT_COLOR}88`,
-          "--clip-start": `${CONTENT_START_COL * GRID_COL}px`,
-        }}
+        style={
+          {
+            borderColor: `${ABOUT_COLOR}88`,
+            "--clip-start": `${CONTENT_START_COL * GRID_COL}px`,
+          } as CSSProperties
+        }
       >
         <div
           className="pointer-events-none absolute inset-0"
