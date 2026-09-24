@@ -80,7 +80,7 @@ export function Projects() {
       </h2>
 
       <div className="relative border-t border-border bg-bg-panel">
-        <div className="sticky top-[var(--topbar-h)] z-40">
+        <div className="sticky top-[var(--topbar-h)] z-40 hidden md:block">
           <div className="relative flex border-b border-border bg-bg-secondary">
             <div className="hidden h-5 w-[160px] shrink-0 border-r border-border bg-bg-secondary md:block" />
             <div
@@ -211,7 +211,9 @@ export function Projects() {
               </span>
             </div>
           </div>
-          <SectionGap withGrid />
+          <div className="hidden md:contents">
+            <SectionGap withGrid />
+          </div>
 
           {/* Project rows — ID + clip share one CSS grid row */}
           {projects.map((project) => {

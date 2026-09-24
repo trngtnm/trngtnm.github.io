@@ -38,31 +38,31 @@ export function ChannelRow({
       aria-pressed={active}
       aria-label={skill.name}
       className={cn(
-        "flex min-w-0 flex-col items-center gap-1.5 border px-0.5 py-3 transition-colors duration-150 sm:px-1",
+        "flex min-w-0 flex-row items-center gap-2 border px-2 py-2.5 text-left transition-colors duration-150 md:flex-col md:items-center md:gap-1.5 md:px-1 md:py-3 md:text-center",
         active
           ? "border-accent bg-accent-muted"
           : "border-border bg-bg-panel hover:border-border-strong",
       )}
     >
       <span
-        className="h-1 w-full shrink-0"
+        className="h-8 w-1.5 shrink-0 self-stretch md:h-1 md:w-full md:self-auto"
         style={{ backgroundColor: color }}
         aria-hidden
       />
 
       <span
         className={cn(
-          "flex min-h-[7.5rem] items-end justify-center rounded-sm px-1 py-2 font-mono text-xs font-semibold tracking-[0.18em] uppercase [writing-mode:vertical-rl] [text-orientation:mixed] rotate-180 sm:min-h-[9rem] sm:text-sm",
+          "min-w-0 flex-1 truncate font-mono text-xs font-semibold tracking-[0.14em] uppercase md:flex md:min-h-[9rem] md:flex-none md:items-end md:justify-center md:rounded-sm md:px-1 md:py-2 md:tracking-[0.18em] md:[writing-mode:vertical-rl] md:[text-orientation:mixed] md:rotate-180 md:text-sm",
           active
-            ? "bg-accent text-bg-primary"
-            : "bg-bg-elevated text-text-primary",
+            ? "text-accent md:bg-accent md:text-bg-primary"
+            : "text-text-primary md:bg-bg-elevated",
         )}
       >
         {skill.name}
       </span>
 
       <span
-        className="relative size-5 shrink-0 rounded-full border border-border-strong bg-bg-elevated sm:size-6"
+        className="relative hidden size-6 shrink-0 rounded-full border border-border-strong bg-bg-elevated md:block"
         aria-hidden
       >
         <span
@@ -71,7 +71,7 @@ export function ChannelRow({
         />
       </span>
 
-      <span className="flex flex-col gap-0.5" aria-hidden>
+      <span className="hidden flex-col gap-0.5 md:flex" aria-hidden>
         <span className="flex size-4 items-center justify-center border border-border font-mono text-[8px] text-text-muted [writing-mode:vertical-rl]">
           S
         </span>
@@ -80,7 +80,7 @@ export function ChannelRow({
         </span>
       </span>
 
-      <div className="flex w-full min-w-0 flex-1 flex-col gap-1" aria-hidden>
+      <div className="hidden w-full min-w-0 flex-1 flex-col gap-1 md:flex" aria-hidden>
         {Array.from({ length: 3 }).map((_, group) => (
           <div key={group} className="flex w-full flex-col gap-px">
             {Array.from({ length: 4 }).map((__, step) => {

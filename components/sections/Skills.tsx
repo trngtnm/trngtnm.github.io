@@ -19,7 +19,7 @@ export function Skills() {
         Skills
       </h2>
 
-      <div className="grid w-full grid-cols-[repeat(14,minmax(0,1fr))]">
+      <div className="grid w-full grid-cols-2 gap-1 md:grid-cols-[repeat(14,minmax(0,1fr))] md:gap-0">
         {skills.map((skill) => (
           <ChannelRow
             key={skill.id}

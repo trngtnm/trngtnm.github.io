@@ -55,7 +55,7 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
             }}
             aria-expanded={expanded}
             aria-controls={panelId}
-            className="group relative z-10 flex w-full flex-col gap-1.5 overflow-hidden px-3 py-2 text-left md:gap-2 md:px-4 md:py-3"
+            className="group relative z-10 grid min-h-32 w-full grid-rows-[auto_1fr] items-center gap-1.5 overflow-hidden px-3 py-3 text-left md:flex md:min-h-0 md:flex-col md:gap-2 md:px-4 md:py-3"
           >
             <div className="relative z-10 flex flex-wrap items-center gap-3">
               <span
@@ -85,7 +85,7 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
                 </span>
               )}
             </div>
-            <p className="relative z-10 truncate text-xs text-text-primary/85 md:hidden">
+            <p className="relative z-10 line-clamp-2 text-xs leading-snug text-text-primary/85 md:hidden">
               {project.shortDescription}
             </p>
             <p className="relative z-10 hidden text-sm leading-relaxed text-text-primary/85 md:block">
