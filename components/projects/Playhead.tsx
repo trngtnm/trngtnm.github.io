@@ -26,7 +26,7 @@ export function Playhead({ railWidth }: PlayheadProps) {
       return;
     }
     const controls = animate(0, 1, {
-      duration: 3.2,
+      duration: 2.5,
       ease: "easeOut",
       onUpdate: setBeamProgress,
       onComplete: () => setBeamProgress(1),

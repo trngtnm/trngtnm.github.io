@@ -193,7 +193,7 @@ export function Projects() {
         }`}
       >
         <motion.div
-          className={`sticky top-[var(--topbar-h)] z-40 ${
+          className={`sticky top-[var(--topbar-h)] z-40 bg-bg-secondary ${
             phase === "columns" ? "h-0 overflow-hidden md:block" : "hidden md:block"
           }`}
           initial={{ opacity: 0 }}

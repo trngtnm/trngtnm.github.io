@@ -104,7 +104,7 @@ function AppShellInner({ children }: AppShellProps) {
   }, [phase]);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-bg-primary text-text-primary">
+    <div className="min-h-screen overflow-x-clip bg-bg-primary text-text-primary">
       <TopBar />
       <DirectorySidebar
         activeId={activeId}

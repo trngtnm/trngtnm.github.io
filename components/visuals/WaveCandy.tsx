@@ -165,6 +165,82 @@ export function WaveCandy({
         ctx.globalAlpha = 1;
       }
 
+      const drawing = reveal > 0.02 && reveal < 0.995;
+      if (drawing) {
+        const trailBehind = 0.16;
+        for (const trace of TRACES) {
+          const tipX = reveal * width;
+          const tipY = midY - sample(t, reveal, trace.voice) * ampPx;
+
+          ctx.save();
+          ctx.beginPath();
+          let started = false;
+          const trailStart = Math.max(0, reveal - trailBehind);
+          const startIndex = Math.floor(trailStart * (SCOPE_POINTS - 1));
+          const endIndex = Math.floor(reveal * (SCOPE_POINTS - 1));
+          for (let i = startIndex; i <= endIndex; i++) {
+            const xNorm = i / (SCOPE_POINTS - 1);
+            const x = xNorm * width;
+            const y = midY - sample(t, xNorm, trace.voice) * ampPx;
+            if (!started) {
+              ctx.moveTo(x, y);
+              started = true;
+            } else ctx.lineTo(x, y);
+          }
+          if (started) {
+            const trail = ctx.createLinearGradient(
+              trailStart * width,
+              tipY,
+              tipX,
+              tipY,
+            );
+            trail.addColorStop(0, "rgba(139, 207, 63, 0)");
+            trail.addColorStop(0.45, "rgba(184, 240, 106, 0.25)");
+            trail.addColorStop(1, "rgba(198, 255, 120, 0.85)");
+            ctx.strokeStyle = trail;
+            ctx.lineWidth = 4;
+            ctx.shadowColor = "rgba(139, 207, 63, 0.75)";
+            ctx.shadowBlur = 10;
+            ctx.stroke();
+          }
+          ctx.restore();
+
+          for (let index = 0; index < 7; index++) {
+            const tn = reveal - (index + 1) * 0.016;
+            if (tn <= 0) continue;
+            const fade = 1 - index / 7;
+            const ox = tn * width;
+            const oy = midY - sample(t, tn, trace.voice) * ampPx;
+            const radius = (10 - index) / 2;
+            const orb = ctx.createRadialGradient(ox, oy, 0, ox, oy, radius * 2);
+            orb.addColorStop(0, `rgba(198, 255, 120, ${fade})`);
+            orb.addColorStop(0.7, "rgba(139, 207, 63, 0)");
+            ctx.fillStyle = orb;
+            ctx.beginPath();
+            ctx.arc(ox, oy, radius * 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          const tip = ctx.createRadialGradient(tipX, tipY, 0, tipX, tipY, 14);
+          tip.addColorStop(0, "rgba(198, 255, 120, 1)");
+          tip.addColorStop(0.35, "rgba(139, 207, 63, 0.85)");
+          tip.addColorStop(0.7, "rgba(139, 207, 63, 0)");
+          ctx.fillStyle = tip;
+          ctx.beginPath();
+          ctx.arc(tipX, tipY, 14, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.save();
+          ctx.shadowColor = "rgba(139, 207, 63, 0.95)";
+          ctx.shadowBlur = 18;
+          ctx.fillStyle = "rgba(198, 255, 120, 0.95)";
+          ctx.beginPath();
+          ctx.arc(tipX, tipY, 3, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
       if (!reduceMotion) raf = requestAnimationFrame(draw);
     };
 
