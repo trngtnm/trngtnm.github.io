@@ -7,7 +7,14 @@ import { GRID_COL, MARKER_STEP_COLS } from "@/data/clipRanges";
 import { profile, social } from "@/data/social";
 import { Circle } from "lucide-react";
 import { animate, motion } from "motion/react";
-import { forwardRef, useEffect, useState, type CSSProperties } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 
 const INTRO_LABEL = "#d0d0d0";
 /** Marker 01 is col 1; 1¼ = one quarter-step past 01. */
@@ -134,56 +141,265 @@ export const IntroClip = forwardRef<HTMLElement>(function IntroClip(_, ref) {
   );
 });
 
-const NAME_GLOW_WINDOW = 0.28;
+const DRAW_BASE = 0.5;
+const DRAW_STEP = 0.12;
+const GLOW_S = 0.25;
+const TRAIL_BEHIND = 0.16;
+
+const LETTERS: Record<
+  string,
+  { viewBox: string; d: string; widthEm: number }
+> = {
+  T: {
+    viewBox: "0 0 56.8 100",
+    widthEm: 0.568,
+    d: "M33.8 79L23 79L23 17.9L1.2 17.9L1.2 8L55.6 8L55.6 17.9L33.8 17.9Z",
+  },
+  I: {
+    viewBox: "0 0 28 100",
+    widthEm: 0.28,
+    d: "M19.4 79L8.6 79L8.6 8L19.4 8Z",
+  },
+  N: {
+    viewBox: "0 0 74.5 100",
+    widthEm: 0.745,
+    d: "M19.4 79L8.6 79L8.6 8L22.3 8L55.1 65.9L55.1 8L65.9 8L65.9 79L51.7 79L19.4 22.4Z",
+  },
+  M: {
+    viewBox: "0 0 89 100",
+    widthEm: 0.89,
+    d: "M19.4 79L8.6 79L8.6 8L23.4 8L44.5 66.3L65.6 8L80.4 8L80.4 79L69.6 79L69.6 27L50.5 78.9L38.5 78.9L19.4 27Z",
+  },
+  A: {
+    viewBox: "0 0 68.9 100",
+    widthEm: 0.689,
+    d: "M13.5 79L2 79L27.6 8L41.3 8L66.9 79L55.4 79L48.9 60.5L19.9 60.5Z M34.4 18.3L23.3 50.7L45.6 50.7Z",
+  },
+};
 
 function GlowName({ text, active }: { text: string; active: boolean }) {
-  const [sweep, setSweep] = useState(0);
   const chars = Array.from(text);
+  const glowId = useId().replace(/:/g, "");
+  const [reduce, setReduce] = useState(false);
 
   useEffect(() => {
-    if (!active) {
-      setSweep(0);
-      return;
-    }
-    const controls = animate(0, 1 + NAME_GLOW_WINDOW, {
-      duration: 1.4,
-      ease: "linear",
-      onUpdate: setSweep,
-      onComplete: () => setSweep(1 + NAME_GLOW_WINDOW),
-    });
-    return () => controls.stop();
-  }, [active]);
+    setReduce(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
 
+  let letterIndex = 0;
   return (
-    <p className="mt-2 text-7xl font-medium tracking-tight text-text-primary sm:text-8xl md:text-9xl">
-      {chars.map((char, index) => {
-        const appearAt =
-          chars.length <= 1 ? 0 : index / (chars.length - 1);
-        const age = sweep - appearAt;
-        const finished = sweep >= 1 + NAME_GLOW_WINDOW - 0.001;
-        const flash =
-          !finished && age > 0 && age < NAME_GLOW_WINDOW
-            ? Math.sin((age / NAME_GLOW_WINDOW) * Math.PI)
-            : 0;
-        return (
-          <span
-            key={`${char}-${index}`}
-            className={char === " " ? "inline" : "inline-block"}
-            style={{
-              color:
-                flash > 0.05
-                  ? `rgba(255, 255, 255, ${0.9 + flash * 0.1})`
-                  : undefined,
-              textShadow:
-                flash > 0.05
-                  ? `0 0 8px rgba(255, 255, 255, ${flash}), 0 0 18px rgba(255, 255, 255, ${flash * 0.85}), 0 0 32px rgba(255, 255, 255, ${flash * 0.55})`
-                  : undefined,
-            }}
+    <p className="mt-2 flex flex-wrap items-end text-7xl font-medium tracking-tight text-text-primary sm:text-8xl md:text-9xl">
+      <svg className="absolute h-0 w-0" aria-hidden>
+        <defs>
+          <filter
+            id={`${glowId}-glow`}
+            x="-80%"
+            y="-80%"
+            width="260%"
+            height="260%"
           >
-            {char === " " ? "\u00a0" : char}
-          </span>
+            <feGaussianBlur stdDeviation="1.8" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      </svg>
+      {chars.map((char, index) => {
+        if (char === " ") {
+          return (
+            <span key={`space-${index}`} className="inline-block w-[0.243em]" />
+          );
+        }
+        const i = letterIndex++;
+        return (
+          <GlowLetter
+            key={`${char}-${index}`}
+            char={char}
+            letterIndex={i}
+            active={active}
+            reduce={reduce}
+            glowId={`${glowId}-glow`}
+          />
         );
       })}
     </p>
+  );
+}
+
+function GlowLetter({
+  char,
+  letterIndex,
+  active,
+  reduce,
+  glowId,
+}: {
+  char: string;
+  letterIndex: number;
+  active: boolean;
+  reduce: boolean;
+  glowId: string;
+}) {
+  const pathRef = useRef<SVGPathElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [tip, setTip] = useState<{ x: number; y: number } | null>(null);
+  const [ghosts, setGhosts] = useState<
+    { x: number; y: number; fade: number }[]
+  >([]);
+  const [drawn, setDrawn] = useState(false);
+  const [flash, setFlash] = useState(0);
+  const glyph = LETTERS[char];
+
+  useEffect(() => {
+    if (!active) {
+      setProgress(0);
+      setTip(null);
+      setGhosts([]);
+      setDrawn(false);
+      setFlash(0);
+    }
+  }, [active]);
+
+  useEffect(() => {
+    if (!active || reduce) return;
+    const controls = animate(0, 1, {
+      duration: DRAW_BASE + letterIndex * DRAW_STEP,
+      ease: "linear",
+      onUpdate: (value) => {
+        setProgress(value);
+        const path = pathRef.current;
+        if (!path) return;
+        const len = path.getTotalLength();
+        if (len <= 0) return;
+        const pt = path.getPointAtLength(value * len);
+        setTip({ x: pt.x, y: pt.y });
+        const next: { x: number; y: number; fade: number }[] = [];
+        for (let index = 0; index < 7; index++) {
+          const t = value - (index + 1) * 0.016;
+          if (t <= 0) continue;
+          const ghost = path.getPointAtLength(t * len);
+          next.push({ x: ghost.x, y: ghost.y, fade: 1 - index / 7 });
+        }
+        setGhosts(next);
+      },
+      onComplete: () => {
+        setProgress(1);
+        setTip(null);
+        setGhosts([]);
+        setDrawn(true);
+      },
+    });
+    return () => controls.stop();
+  }, [active, letterIndex, reduce]);
+
+  useEffect(() => {
+    if (!active || !drawn || reduce) return;
+    const controls = animate(0, 1, {
+      duration: GLOW_S,
+      ease: "easeOut",
+      onUpdate: (value) => setFlash(Math.sin(value * Math.PI)),
+      onComplete: () => setFlash(0),
+    });
+    return () => controls.stop();
+  }, [active, drawn, reduce]);
+
+  if (!glyph) {
+    return <span className="inline-block">{char}</span>;
+  }
+
+  const glowing = flash > 0.05;
+  const tracing = active && !drawn && !reduce && progress > 0.01;
+  const tipOn = tracing && progress < 0.98;
+  const trailStart = Math.max(0, progress - TRAIL_BEHIND);
+  const trailLen = Math.max(0, progress - trailStart);
+
+  return (
+    <svg
+      viewBox={glyph.viewBox}
+      className="inline-block h-[1em] overflow-visible"
+      style={{
+        width: `${glyph.widthEm}em`,
+        color: glowing ? "#ffffff" : "var(--text-primary)",
+        filter: glowing
+          ? `drop-shadow(0 0 8px rgba(255,255,255,${flash})) drop-shadow(0 0 18px rgba(255,255,255,${flash * 0.85})) drop-shadow(0 0 32px rgba(255,255,255,${flash * 0.55}))`
+          : undefined,
+      }}
+      aria-label={char}
+    >
+      <path
+        ref={pathRef}
+        d={glyph.d}
+        fill="none"
+        stroke="none"
+        pathLength={1}
+      />
+
+      {reduce || drawn ? (
+        <path d={glyph.d} fill="currentColor" fillRule="evenodd" />
+      ) : (
+        <>
+          <path
+            d={glyph.d}
+            fill="none"
+            fillRule="evenodd"
+            stroke="#ffffff"
+            strokeWidth={2.4}
+            strokeLinejoin="miter"
+            strokeLinecap="round"
+            pathLength={1}
+            strokeDasharray={`${progress} 1`}
+            filter={`url(#${glowId})`}
+            style={{
+              filter:
+                "drop-shadow(0 0 3px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.55))",
+            }}
+          />
+          {tipOn && trailLen > 0 && (
+            <path
+              d={glyph.d}
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth={5.5}
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              pathLength={1}
+              strokeDasharray={`${trailLen} 1`}
+              strokeDashoffset={-trailStart}
+              opacity={0.9}
+              style={{
+                filter:
+                  "blur(2.6px) drop-shadow(0 0 6px rgba(255,255,255,0.95))",
+              }}
+            />
+          )}
+          {tipOn &&
+            ghosts.map((ghost, index) => (
+              <circle
+                key={index}
+                cx={ghost.x}
+                cy={ghost.y}
+                r={4.8 - index * 0.45}
+                fill={`rgba(255,255,255,${ghost.fade * 0.7})`}
+                style={{
+                  filter: `blur(${1.2 + (1 - ghost.fade) * 1.4}px)`,
+                }}
+              />
+            ))}
+          {tipOn && tip && (
+            <circle
+              cx={tip.x}
+              cy={tip.y}
+              r={3.4}
+              fill="#ffffff"
+              style={{
+                filter:
+                  "drop-shadow(0 0 5px rgba(255,255,255,1)) drop-shadow(0 0 12px rgba(255,255,255,0.85)) drop-shadow(0 0 20px rgba(255,255,255,0.55))",
+              }}
+            />
+          )}
+        </>
+      )}
+    </svg>
   );
 }
