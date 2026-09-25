@@ -102,7 +102,6 @@ export function DrumMachine() {
                   "border-b border-border py-1 text-center font-mono text-[8px] leading-none text-text-muted",
                   inBar === 0 && "border-l border-l-border-strong text-text-secondary",
                   inBar !== 0 && inBar % 4 === 0 && "border-l border-l-border",
-                  inBar % 4 !== 0 && "border-l border-l-white/[0.06]",
                   isPlaying && index === step && "text-playback",
                 )}
               >
