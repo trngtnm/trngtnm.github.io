@@ -44,9 +44,6 @@ export const metadata: Metadata = {
       "Computer Science student building software across AI/ML, mobile development, backend systems, and data.",
     images: ["/og.png"],
   },
-  icons: {
-    icon: "/favicon.ico",
-  },
 };
 
 export default function RootLayout({
