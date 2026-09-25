@@ -40,13 +40,6 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
             } as CSSProperties
           }
         >
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundColor: `${project.color}${expanded ? "66" : "4d"}`,
-            }}
-            aria-hidden
-          />
           <button
             type="button"
             onClick={(event) => {
@@ -57,6 +50,13 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
             aria-controls={panelId}
             className="group relative z-10 grid min-h-40 w-full grid-rows-[auto_1fr] items-start gap-2 overflow-hidden px-3 py-3 text-left md:flex md:min-h-0 md:flex-col md:items-stretch md:gap-2 md:px-4 md:py-3"
           >
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                backgroundColor: `${project.color}${expanded ? "66" : "4d"}`,
+              }}
+              aria-hidden
+            />
             <div className="relative z-10 flex flex-wrap items-center gap-3">
               <span
                 className="flex size-4 items-center justify-center"
@@ -78,20 +78,20 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
               >
                 {project.name}
               </h3>
-              <Tag>{project.status}</Tag>
+              <Tag className="text-text-primary">{project.status}</Tag>
               {expanded && (
                 <span className="font-mono text-[10px] tracking-wider text-accent uppercase">
                   Selected
                 </span>
               )}
             </div>
-            <p className="relative z-10 line-clamp-5 text-xs leading-relaxed text-text-primary/85 md:hidden">
+            <p className="relative z-10 line-clamp-5 text-xs leading-relaxed text-text-primary md:hidden">
               {project.shortDescription}
             </p>
-            <p className="relative z-10 hidden text-sm leading-relaxed text-text-primary/85 md:block">
+            <p className="relative z-10 hidden text-sm leading-relaxed text-text-primary md:block">
               {project.description}
             </p>
-            <p className="relative z-10 hidden font-mono text-[10px] tracking-wider text-text-secondary uppercase md:block">
+            <p className="relative z-10 hidden font-mono text-xs tracking-wider text-text-primary uppercase md:block">
               {project.technologies.slice(0, 4).join(" · ")}
             </p>
           </button>
@@ -99,33 +99,41 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
           <div
             id={panelId}
             hidden={!expanded}
-            className="relative z-10 border-t px-3 py-5 sm:px-4"
+            className="relative z-10 border-t bg-bg-primary/70 px-3 py-5 sm:px-4"
             style={{ borderColor: `${accent}55` }}
             onClick={(event) => event.stopPropagation()}
           >
             <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
               <div className="space-y-6">
                 <div>
-                  <h4 className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase">
+                  <h4 className="font-mono text-xs tracking-[0.18em] text-text-primary uppercase">
                     Stack
                   </h4>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {project.technologies.map((tech) => (
-                      <Tag key={tech}>{tech}</Tag>
+                      <Tag
+                        key={tech}
+                        className="border-white/25 bg-black/30 text-text-primary"
+                      >
+                        {tech}
+                      </Tag>
                     ))}
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase">
+                  <h4 className="font-mono text-xs tracking-[0.18em] text-text-primary uppercase">
                     Features
                   </h4>
-                  <ol className="mt-3 space-y-2">
+                  <ol className="mt-3 space-y-2.5">
                     {project.features.map((feature, index) => (
                       <li
                         key={feature}
-                        className="flex gap-3 text-sm text-text-secondary"
+                        className="flex gap-3 text-sm leading-relaxed text-text-primary"
                       >
-                        <span className="font-mono text-xs text-text-muted">
+                        <span
+                          className="font-mono text-xs font-semibold tabular-nums"
+                          style={{ color: accent }}
+                        >
                           {String(index + 1).padStart(2, "0")}
                         </span>
                         {feature}
@@ -168,7 +176,7 @@ export const ProjectClip = forwardRef<HTMLElement, ProjectClipProps>(
               </div>
 
               <figure className="hidden overflow-hidden rounded-lg border border-border bg-bg-panel md:block">
-                <div className="border-b border-border px-3 py-2 font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase">
+                <div className="border-b border-border px-3 py-2 font-mono text-[10px] tracking-[0.2em] text-text-secondary uppercase">
                   Preview
                 </div>
                 <div className="relative aspect-[16/10] bg-bg-elevated">

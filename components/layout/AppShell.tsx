@@ -4,6 +4,7 @@ import {
   IntroRevealProvider,
   useIntroReveal,
 } from "@/components/intro/IntroRevealContext";
+import { DrumMachineProvider } from "@/components/drum-machine/DrumMachineContext";
 import { DirectorySidebar } from "@/components/layout/DirectorySidebar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { TopBar } from "@/components/layout/TopBar";
@@ -123,7 +124,9 @@ export function AppShell({ children }: AppShellProps) {
     <TransportProvider>
       <SelectedProjectProvider>
         <IntroRevealProvider>
-          <AppShellInner>{children}</AppShellInner>
+          <DrumMachineProvider>
+            <AppShellInner>{children}</AppShellInner>
+          </DrumMachineProvider>
         </IntroRevealProvider>
       </SelectedProjectProvider>
     </TransportProvider>

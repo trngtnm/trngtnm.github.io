@@ -7,40 +7,55 @@ export const MARKER_STEP_COLS = 4;
 /** Half-marker stagger in grid columns. */
 export const HALF_STEP_COLS = MARKER_STEP_COLS / 2;
 
-/** Project clip length in grid columns (3½ markers). */
-export const CLIP_SPAN_COLS = MARKER_STEP_COLS * 3.5;
+/** Project clip length in grid columns (3½ markers + 1). */
+export const CLIP_SPAN_COLS = MARKER_STEP_COLS * 3.5 + 1;
 
-/**
- * Clip placement on the 48px grid (canvas is fit-to-width, no H-scroll).
- * Column 0 = first cell (flush with ID rail). Marker 01 sits at column 1
- * (one empty column between the ID rail and 01).
- * Project tracks stagger starting one column after 01; each spans 3½ markers.
- * `width` is span in grid columns (intro uses full lane; width unused).
- */
-export const clipRanges = [
-  { slug: "intro", startCol: 0, width: CLIP_SPAN_COLS },
-  { slug: "kiteview", startCol: 2, width: CLIP_SPAN_COLS },
-  { slug: "holoura", startCol: 2 + HALF_STEP_COLS, width: CLIP_SPAN_COLS },
-  {
-    slug: "ai-music-transcription",
-    startCol: 2 + MARKER_STEP_COLS,
-    width: CLIP_SPAN_COLS,
-  },
-  {
-    slug: "parkeye",
-    startCol: 2 + MARKER_STEP_COLS + HALF_STEP_COLS,
-    width: CLIP_SPAN_COLS,
-  },
+/** Empty columns between the ID rail / right edge and the first / last clip. */
+export const PROJECT_EDGE_COLS = 2;
+
+export const PROJECT_SLUGS = [
+  "kiteview",
+  "holoura",
+  "ai-music-transcription",
+  "parkeye",
 ] as const;
 
-export function clipRangeForSlug(slug: string) {
-  return (
-    clipRanges.find((range) => range.slug === slug) ?? {
-      slug,
-      startCol: 2,
-      width: CLIP_SPAN_COLS,
-    }
+export function staggeredProjectRange(
+  index: number,
+  count: number,
+  laneWidthPx: number,
+) {
+  const totalCols = Math.max(
+    PROJECT_EDGE_COLS * 2 + 1,
+    Math.floor(laneWidthPx / GRID_COL),
   );
+  const width = Math.min(
+    CLIP_SPAN_COLS,
+    Math.max(1, totalCols - PROJECT_EDGE_COLS * 2),
+  );
+  const firstStart = PROJECT_EDGE_COLS;
+  const lastStart = Math.max(firstStart, totalCols - PROJECT_EDGE_COLS - width);
+  const step = count > 1 ? (lastStart - firstStart) / (count - 1) : 0;
+  const startCol =
+    count <= 1 || index >= count - 1
+      ? lastStart
+      : Math.round(firstStart + index * step);
+
+  return { startCol, width };
+}
+
+export function clipRangeForSlug(slug: string, laneWidthPx?: number) {
+  const index = PROJECT_SLUGS.indexOf(
+    slug as (typeof PROJECT_SLUGS)[number],
+  );
+  if (index >= 0) {
+    const lane = laneWidthPx ?? arrangementLaneWidthPx();
+    return {
+      slug,
+      ...staggeredProjectRange(index, PROJECT_SLUGS.length, lane),
+    };
+  }
+  return { slug, startCol: 0, width: CLIP_SPAN_COLS };
 }
 
 /** Playhead progress (0–1) at the end of a clip within the track lane. */

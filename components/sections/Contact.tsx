@@ -1,5 +1,6 @@
 "use client";
 
+import { DrumMachine } from "@/components/drum-machine/DrumMachine";
 import { Button } from "@/components/ui/Button";
 import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 import { SectionLabel } from "@/components/ui/SectionLabel";
@@ -82,6 +83,8 @@ export function Contact() {
       aria-labelledby="contact-heading"
       className="section-pad content-pad scroll-mt-[calc(var(--topbar-h)+1rem)]"
     >
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,36rem)_minmax(0,1fr)] lg:items-end">
+        <div>
       <SectionLabel label="CONTACT" />
       <h2
         id="contact-heading"
@@ -96,7 +99,7 @@ export function Contact() {
         Open to software engineering, AI/ML, and technical collaboration.
       </p>
 
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap gap-3">
         {social.map((link) => {
           const Icon = iconMap[link.icon];
           return (
@@ -114,77 +117,80 @@ export function Contact() {
         })}
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="mt-12 max-w-xl space-y-5 border border-border bg-bg-panel p-6"
-        noValidate
-      >
-        <div>
-          <label
-            htmlFor="name"
-            className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase"
-          >
-            Name
-          </label>
-          <input
-            id="name"
-            autoComplete="name"
-            className={inputClass}
-            {...register("name")}
-          />
-          {errors.name && (
-            <p className="mt-1 text-xs text-accent">{errors.name.message}</p>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-6 flex w-full max-w-xl flex-col space-y-5 border border-border bg-bg-panel p-6"
+          noValidate
+        >
+          <div>
+            <label
+              htmlFor="name"
+              className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase"
+            >
+              Name
+            </label>
+            <input
+              id="name"
+              autoComplete="name"
+              className={inputClass}
+              {...register("name")}
+            />
+            {errors.name && (
+              <p className="mt-1 text-xs text-accent">{errors.name.message}</p>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="email"
+              className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              className={inputClass}
+              {...register("email")}
+            />
+            {errors.email && (
+              <p className="mt-1 text-xs text-accent">{errors.email.message}</p>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="message"
+              className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase"
+            >
+              Message
+            </label>
+            <textarea
+              id="message"
+              rows={5}
+              className={cn(inputClass, "min-h-28 resize-y")}
+              {...register("message")}
+            />
+            {errors.message && (
+              <p className="mt-1 text-xs text-accent">{errors.message.message}</p>
+            )}
+          </div>
+          <Button type="submit" variant="primary" disabled={isSubmitting} className="shrink-0">
+            {isSubmitting ? "Sending…" : "Send Message"}
+          </Button>
+          {status === "success" && (
+            <p className="font-mono text-xs text-text-secondary" role="status">
+              Message ready — thanks for reaching out.
+            </p>
           )}
-        </div>
-        <div>
-          <label
-            htmlFor="email"
-            className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase"
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            className={inputClass}
-            {...register("email")}
-          />
-          {errors.email && (
-            <p className="mt-1 text-xs text-accent">{errors.email.message}</p>
+          {status === "error" && (
+            <p className="font-mono text-xs text-accent" role="alert">
+              Something went wrong. Email {profile.email} directly.
+            </p>
           )}
+        </form>
         </div>
-        <div>
-          <label
-            htmlFor="message"
-            className="font-mono text-[10px] tracking-[0.2em] text-text-muted uppercase"
-          >
-            Message
-          </label>
-          <textarea
-            id="message"
-            rows={5}
-            className={cn(inputClass, "resize-y")}
-            {...register("message")}
-          />
-          {errors.message && (
-            <p className="mt-1 text-xs text-accent">{errors.message.message}</p>
-          )}
-        </div>
-        <Button type="submit" variant="primary" disabled={isSubmitting}>
-          {isSubmitting ? "Sending…" : "Send Message"}
-        </Button>
-        {status === "success" && (
-          <p className="font-mono text-xs text-text-secondary" role="status">
-            Message ready — thanks for reaching out.
-          </p>
-        )}
-        {status === "error" && (
-          <p className="font-mono text-xs text-accent" role="alert">
-            Something went wrong. Email {profile.email} directly.
-          </p>
-        )}
-      </form>
+        <DrumMachine />
+      </div>
     </section>
   );
 }

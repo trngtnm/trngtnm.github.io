@@ -121,10 +121,11 @@ export function Projects() {
   const { selectedSlug, setSelectedSlug } = useSelectedProject();
   const { phase } = useIntroReveal();
   const [railWidth, setRailWidth] = useState(0);
+  const [laneWidth, setLaneWidth] = useState(0);
 
   const handleSelect = useCallback(
     (slug: string) => {
-      const range = clipRangeForSlug(slug);
+      const range = clipRangeForSlug(slug, laneWidth);
       const collapsing = selectedSlug === slug;
       setSelectedSlug(collapsing ? null : slug);
       seekTo(
@@ -148,15 +149,28 @@ export function Projects() {
         });
       }
     },
-    [seekTo, setSelectedSlug, selectedSlug],
+    [seekTo, setSelectedSlug, selectedSlug, laneWidth],
   );
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
-    const syncRail = () => setRailWidth(mq.matches ? RAIL_WIDTH_MD : 0);
-    syncRail();
-    mq.addEventListener("change", syncRail);
-    return () => mq.removeEventListener("change", syncRail);
+    const sync = () => {
+      setRailWidth(mq.matches ? RAIL_WIDTH_MD : 0);
+      setLaneWidth(arrangementLaneWidthPx());
+    };
+    sync();
+    mq.addEventListener("change", sync);
+    window.addEventListener("resize", sync);
+    const timeline = document.getElementById("arrangement-timeline");
+    const canvas = document.getElementById("arrangement-canvas");
+    const ro = new ResizeObserver(sync);
+    if (timeline) ro.observe(timeline);
+    if (canvas) ro.observe(canvas);
+    return () => {
+      mq.removeEventListener("change", sync);
+      window.removeEventListener("resize", sync);
+      ro.disconnect();
+    };
   }, []);
 
   return (
@@ -284,7 +298,7 @@ export function Projects() {
 
           {/* Project rows — ID + clip share one CSS grid row */}
           {projects.map((project) => {
-            const range = clipRangeForSlug(project.slug);
+            const range = clipRangeForSlug(project.slug, laneWidth);
             const isOpen = selectedSlug === project.slug;
             const accent = project.colorBright;
             return (

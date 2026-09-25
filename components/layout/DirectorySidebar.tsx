@@ -3,7 +3,9 @@
 import { useIntroReveal } from "@/components/intro/IntroRevealContext";
 import { useSelectedProject } from "@/components/session/SelectedProjectContext";
 import { navigation } from "@/data/navigation";
+import { profile } from "@/data/social";
 import { cn } from "@/lib/utils";
+import { Download } from "lucide-react";
 import { motion } from "motion/react";
 
 type DirectorySidebarProps = {
@@ -35,9 +37,21 @@ export function DirectorySidebar({
         <p className="font-mono text-[10px] tracking-[0.25em] text-text-muted uppercase">
           Project_Root /
         </p>
-        <p className="mt-1 font-mono text-xs tracking-wider text-text-secondary uppercase">
-          Portfolio
-        </p>
+        <a
+          href="#intro"
+          onClick={(event) => {
+            event.preventDefault();
+            onNavigate("intro");
+          }}
+          className="mt-1 inline-flex items-center gap-1.5 font-mono text-xs tracking-[0.16em] text-text-primary uppercase"
+        >
+          {profile.displayName}
+          <span
+            className="record-blink size-1.5 shrink-0 rounded-full bg-record shadow-[0_0_8px_rgba(196,60,60,0.7)]"
+            aria-label="Recording"
+            role="status"
+          />
+        </a>
       </div>
 
       <nav
@@ -75,6 +89,18 @@ export function DirectorySidebar({
           })}
         </ul>
       </nav>
+
+      <div className="border-t border-border px-4 py-3">
+        <a
+          href={profile.resumeHref}
+          download={profile.session}
+          aria-label="Download resume"
+          className="inline-flex w-full min-h-10 items-center justify-center gap-1.5 border border-border bg-bg-panel px-2 font-mono text-[10px] tracking-[0.1em] text-text-primary uppercase transition-colors duration-150 hover:border-accent hover:text-accent"
+        >
+          <Download className="size-3.5 shrink-0" aria-hidden />
+          <span className="truncate">{profile.session}</span>
+        </a>
+      </div>
 
       <div className="border-t border-border px-4 py-4 font-mono text-[10px] tracking-wider text-text-muted uppercase">
         <p className="inline-flex items-center gap-2 text-playback">
